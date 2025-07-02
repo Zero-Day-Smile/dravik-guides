@@ -1,0 +1,23 @@
+[
+  {
+    "title": "Trekking Basics",
+    "url": "https://raw.githubusercontent.com/your-github/dravik-guides/main/trekking_basics.html",
+    "category": "Beginner",
+    "tags": ["trekking", "hiking", "beginner"],
+    "updated": "2024-09-10"
+  },
+  {
+    "title": "Wilderness First Aid",
+    "url": "https://raw.githubusercontent.com/your-github/dravik-guides/main/first_aid.html",
+    "category": "Emergency",
+    "tags": ["first aid", "injury", "rescue"],
+    "updated": "2024-07-02"
+  },
+  {
+    "title": "Survival Essentials",
+    "url": "https://raw.githubusercontent.com/your-github/dravik-guides/main/survival.html",
+    "category": "Advanced",
+    "tags": ["survival", "nature", "danger"],
+    "updated": "2025-06-01"
+  }
+]
