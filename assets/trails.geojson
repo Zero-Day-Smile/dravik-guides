@@ -1,0 +1,21 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "LineString",
+        "coordinates": [
+          [86.9250, 27.9881],
+          [86.9260, 27.9890],
+          [86.9270, 27.9900]
+        ]
+      },
+      "properties": {
+        "name": "Everest Base Camp Trail",
+        "type": "hiking",
+        "difficulty": "moderate"
+      }
+    }
+  ]
+}

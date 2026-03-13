@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 6%;
+    --foreground: 40 15% 92%;
+
+    --card: 40 12% 10%;
+    --card-foreground: 40 15% 92%;
+
+    --popover: 40 12% 10%;
+    --popover-foreground: 40 15% 92%;
+
+    --primary: 38 65% 58%;
+    --primary-foreground: 40 20% 6%;
+
+    --secondary: 150 25% 18%;
+    --secondary-foreground: 150 20% 85%;
+
+    --muted: 40 8% 14%;
+    --muted-foreground: 40 10% 55%;
+
+    --accent: 150 35% 25%;
+    --accent-foreground: 150 20% 90%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 40 8% 18%;
+    --input: 40 8% 18%;
+    --ring: 38 65% 58%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --forest: 150 30% 15%;
+    --forest-light: 150 25% 22%;
+    --amber: 38 65% 58%;
+    --amber-glow: 32 80% 50%;
+    --stone: 35 20% 82%;
+    --stone-dark: 35 12% 30%;
+    --peak: 220 15% 25%;
+    --mist: 200 10% 70%;
+
+    --gradient-hero: linear-gradient(180deg, hsla(40, 20%, 6%, 0) 0%, hsla(40, 20%, 6%, 0.6) 50%, hsl(40, 20%, 6%) 100%);
+    --gradient-amber: linear-gradient(135deg, hsl(38, 65%, 58%), hsl(32, 80%, 50%));
+    --gradient-forest: linear-gradient(135deg, hsl(150, 30%, 15%), hsl(150, 25%, 22%));
+    --shadow-amber: 0 8px 32px -8px hsla(38, 65%, 58%, 0.3);
+    --shadow-card: 0 4px 24px -4px hsla(0, 0%, 0%, 0.4);
+
+    --font-display: 'Outfit', system-ui, sans-serif;
+    --font-body: 'Space Grotesk', system-ui, sans-serif;
+
+    --sidebar-background: 40 12% 8%;
+    --sidebar-foreground: 40 15% 92%;
+    --sidebar-primary: 38 65% 58%;
+    --sidebar-primary-foreground: 40 20% 6%;
+    --sidebar-accent: 150 25% 18%;
+    --sidebar-accent-foreground: 150 20% 85%;
+    --sidebar-border: 40 8% 18%;
+    --sidebar-ring: 38 65% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+  }
+}
+
+@layer utilities {
+  .text-gradient-amber {
+    background: var(--gradient-amber);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .bg-gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .bg-gradient-amber {
+    background: var(--gradient-amber);
+  }
+
+  .bg-gradient-forest {
+    background: var(--gradient-forest);
+  }
+
+  .shadow-amber {
+    box-shadow: var(--shadow-amber);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .glass-card {
+    background: hsla(40, 12%, 10%, 0.7);
+    backdrop-filter: blur(16px);
+    border: 1px solid hsla(40, 15%, 92%, 0.08);
+  }
+}
