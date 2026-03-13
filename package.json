@@ -1,0 +1,8 @@
+{
+  "name": "dravik-monorepo",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "npm --prefix website ci && npm --prefix website run build && rm -rf dist && cp -R website/dist dist"
+  }
+}
