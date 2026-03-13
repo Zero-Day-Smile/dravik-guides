@@ -27,6 +27,7 @@ migrate_working_dir/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 .dart_tool/
+.vite/
 .flutter-plugins
 .flutter-plugins-dependencies
 .pub-cache/
@@ -51,3 +52,5 @@ android/key.properties
 .packages
 .env
 .vscode/
+build_output*.txt
+build_run_log.txt
