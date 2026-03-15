@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,6 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
   String? _inAppAssetUrl;
   bool _loading = true;
   String? _error;
-  late String _resolvedFrontendUrl;
 
   String _contentTypeForPath(String path) {
     final p = path.toLowerCase();
@@ -48,13 +46,27 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
 
   Future<Uint8List?> _readAssetBytes(String path) async {
     final normalized = path.startsWith('/') ? path.substring(1) : path;
-    final assetKey = 'assets/exact_frontend/$normalized';
-    try {
-      final data = await rootBundle.load(assetKey);
-      return data.buffer.asUint8List();
-    } catch (_) {
-      return null;
+    final strippedAssetsPrefix = normalized.startsWith('assets/')
+        ? normalized.substring('assets/'.length)
+        : normalized;
+
+    final candidates = <String>{
+      'assets/exact_frontend/$normalized',
+      'assets/exact_frontend/$strippedAssetsPrefix',
+      normalized,
+    };
+
+    for (final assetKey in candidates) {
+      try {
+        final data = await rootBundle.load(assetKey);
+        return data.buffer.asUint8List();
+      } catch (_) {
+        // Try the next candidate key.
+      }
     }
+
+    debugPrint('Exact frontend asset missing for path: $path');
+    return null;
   }
 
   Future<String?> _startBundledAssetServer() async {
@@ -71,8 +83,13 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
 
           var bytes = await _readAssetBytes(path);
 
-          // SPA fallback: unknown routes serve index.html.
-          bytes ??= await _readAssetBytes('index.html');
+          // SPA fallback only for route-like paths (no file extension).
+          // Do not fallback for missing static assets like .js/.css files.
+          final isLikelyRoute = !path.split('/').last.contains('.');
+          if (bytes == null && isLikelyRoute) {
+            bytes = await _readAssetBytes('index.html');
+            path = '/index.html';
+          }
 
           if (bytes == null) {
             request.response.statusCode = HttpStatus.notFound;
@@ -99,19 +116,9 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
   @override
   void initState() {
     super.initState();
-    _resolvedFrontendUrl = widget.frontendUrl;
-
     if (kIsWeb) {
       _loading = false;
       return;
-    }
-
-    final raw = widget.frontendUrl;
-    final uri = Uri.tryParse(raw);
-    final isLocalhost = uri != null && (uri.host == 'localhost' || uri.host == '127.0.0.1');
-    final platform = defaultTargetPlatform;
-    if (isLocalhost && platform == TargetPlatform.android) {
-      _resolvedFrontendUrl = uri.replace(host: '10.0.2.2').toString();
     }
 
     _controller = WebViewController()
@@ -140,14 +147,25 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
       );
 
     _startBundledAssetServer().then((assetUrl) {
+      if (!mounted) return;
       _inAppAssetUrl = assetUrl;
-      final target = assetUrl ?? _resolvedFrontendUrl;
-      _controller!.loadRequest(Uri.parse(target));
+
+      if (assetUrl == null) {
+        setState(() {
+          _loading = false;
+          _error = 'In-app bundled frontend server failed to start.';
+        });
+        return;
+      }
+
+      _controller!.loadRequest(Uri.parse(assetUrl));
     });
   }
 
   Future<void> _openExternal() async {
-    final uri = Uri.parse(_inAppAssetUrl ?? _resolvedFrontendUrl);
+    final target = _inAppAssetUrl;
+    if (target == null) return;
+    final uri = Uri.parse(target);
     await launchUrl(uri, mode: LaunchMode.externalApplication);
   }
 
@@ -179,17 +197,17 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Open the same frontend URL directly in this browser target:',
+                    'This exact mode is app-only. Open on Android/iOS/macOS to render the bundled frontend.',
                     textAlign: TextAlign.center,
                     style: TextStyle(color: Colors.grey.shade700),
                   ),
                   const SizedBox(height: 8),
-                  SelectableText(widget.frontendUrl),
+                  const SelectableText('Bundled in-app frontend (no online fallback).'),
                   const SizedBox(height: 14),
                   FilledButton.icon(
-                    onPressed: _openExternal,
+                    onPressed: _inAppAssetUrl == null ? null : _openExternal,
                     icon: const Icon(Icons.open_in_new),
-                    label: const Text('Open Frontend URL'),
+                    label: const Text('Open In-App Bundle URL'),
                   ),
                 ],
               ),
@@ -239,7 +257,7 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
                 child: Padding(
                   padding: const EdgeInsets.all(12),
                   child: Text(
-                    'Failed to load in-app bundled frontend and fallback URL ${widget.frontendUrl}\n$_error',
+                    'Failed to load bundled in-app frontend\n$_error',
                     style: const TextStyle(color: Color(0xFFB71C1C)),
                   ),
                 ),

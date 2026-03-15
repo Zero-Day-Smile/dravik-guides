@@ -23,7 +23,7 @@
         android:label="Dravik"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="false"
+        android:usesCleartextTraffic="true"
         android:allowBackup="false">
 
         <activity
