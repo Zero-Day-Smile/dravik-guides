@@ -5,6 +5,7 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:dravik/screens/home_screen.dart'; // Updated
 import 'package:dravik/app_frontend_v2/app_frontend_v2_entry.dart';
+import 'package:dravik/app_frontend_v2/exact_frontend_webview_screen.dart';
 import 'package:dravik/services/mission_engine/mission_engine.dart';
 import 'package:dravik/services/power_manager/mission_power_manager.dart';
 import 'package:dravik/theme_provider.dart'; // Updated
@@ -84,9 +85,14 @@ class DravikApp extends StatelessWidget {
           title: 'Dravik',
           debugShowCheckedModeBanner: false,
           theme: isDark ? AppTheme.darkTheme() : AppTheme.lightTheme(),
-          home: AppFrontendMode.useV2
-              ? const AppFrontendV2Entry()
-              : const HomeScreen(),
+          home: AppFrontendMode.useExactWebFrontend
+              ? ExactFrontendWebViewScreen(
+                  frontendUrl: dotenv.env['EXACT_FRONTEND_URL'] ??
+                      'http://localhost:5173',
+                )
+              : (AppFrontendMode.useV2
+                    ? const AppFrontendV2Entry()
+                    : const HomeScreen()),
         );
       },
     );
