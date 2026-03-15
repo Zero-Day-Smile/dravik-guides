@@ -19,6 +19,13 @@ import 'package:dravik/screens/weather_forecast_screen.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dravik/screens/offline_regions_screen.dart';
 import 'package:dravik/screens/settings_screen.dart' show SettingsScreen;
+import 'package:dravik/screens/analytics_screen.dart';
+import 'package:dravik/screens/place_guide_screen.dart';
+import 'package:dravik/screens/emergency_guides_screen.dart';
+import 'package:dravik/screens/ultimate_guide_screen.dart';
+import 'package:dravik/app_frontend_v2/screens/community_v2_screen.dart';
+import 'package:dravik/app_frontend_v2/screens/quests_v2_screen.dart';
+import 'package:dravik/app_frontend_v2/screens/premium_v2_screen.dart';
 import 'package:dravik/config/platform_capabilities.dart';
 import 'package:dravik/config/feature_flags.dart';
 
@@ -264,7 +271,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFF1A73E8).withOpacity(0.08),
+                color: const Color(0xFF1A73E8).withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Text(
@@ -306,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
               width: double.infinity,
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: const Color(0xFF34A853).withOpacity(0.12),
+                color: const Color(0xFF34A853).withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(14),
               ),
               child: const Text(
@@ -412,8 +419,8 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: color.withOpacity(0.35)),
-        color: color.withOpacity(0.08),
+        border: Border.all(color: color.withValues(alpha: 0.35)),
+        color: color.withValues(alpha: 0.08),
       ),
       child: Row(
         children: [
@@ -480,7 +487,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.black.withOpacity(0.08)),
+                    border: Border.all(color: Colors.black.withValues(alpha: 0.08)),
                   ),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -521,8 +528,8 @@ class _HomeScreenState extends State<HomeScreen> {
           borderRadius: BorderRadius.circular(16),
           gradient: LinearGradient(
             colors: [
-              flagColor.withOpacity(0.08),
-              flagColor.withOpacity(0.02),
+              flagColor.withValues(alpha: 0.08),
+              flagColor.withValues(alpha: 0.02),
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
@@ -538,7 +545,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: flagColor.withOpacity(0.2),
+                      color: flagColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Icon(
@@ -573,9 +580,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     decoration: BoxDecoration(
-                      color: flagColor.withOpacity(0.2),
+                      color: flagColor.withValues(alpha: 0.2),
                       border: Border.all(
-                        color: flagColor.withOpacity(0.5),
+                        color: flagColor.withValues(alpha: 0.5),
                       ),
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -614,7 +621,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.5),
+                  color: Colors.white.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Column(
@@ -695,7 +702,7 @@ class _HomeScreenState extends State<HomeScreen> {
         gradient: LinearGradient(
           colors: [
             const Color(0xFF1A73E8),
-            const Color(0xFF1A73E8).withOpacity(0.7),
+            const Color(0xFF1A73E8).withValues(alpha: 0.7),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -703,7 +710,7 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF1A73E8).withOpacity(0.3),
+            color: const Color(0xFF1A73E8).withValues(alpha: 0.3),
             blurRadius: 20,
             offset: const Offset(0, 10),
           ),
@@ -741,7 +748,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
@@ -758,7 +765,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Container(
               height: 80,
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.1),
+                color: Colors.white.withValues(alpha: 0.1),
               ),
               child: Lottie.asset(
                 'assets/animations/fire.json',
@@ -816,7 +823,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: color.withOpacity(0.15),
+                color: color.withValues(alpha: 0.15),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Icon(icon, color: color, size: 24),
@@ -902,15 +909,15 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.grey.withOpacity(0.3)),
-        color: Colors.grey.withOpacity(0.08),
+        border: Border.all(color: Colors.grey.withValues(alpha: 0.3)),
+        color: Colors.grey.withValues(alpha: 0.08),
       ),
       child: Row(
         children: [
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.18),
+              color: Colors.grey.withValues(alpha: 0.18),
               borderRadius: BorderRadius.circular(12),
             ),
             child: Icon(icon, color: Colors.grey.shade700, size: 28),
@@ -964,8 +971,8 @@ class _HomeScreenState extends State<HomeScreen> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                color.withOpacity(0.9),
-                color.withOpacity(0.7),
+                color.withValues(alpha: 0.9),
+                color.withValues(alpha: 0.7),
               ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
@@ -973,7 +980,7 @@ class _HomeScreenState extends State<HomeScreen> {
             borderRadius: BorderRadius.circular(16),
             boxShadow: [
               BoxShadow(
-                color: color.withOpacity(0.3),
+                color: color.withValues(alpha: 0.3),
                 blurRadius: 15,
                 offset: const Offset(0, 8),
               ),
@@ -984,7 +991,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.2),
+                  color: Colors.white.withValues(alpha: 0.2),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Icon(icon, color: Colors.white, size: 32),
@@ -1007,7 +1014,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       subtitle,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.white.withOpacity(0.8),
+                        color: Colors.white.withValues(alpha: 0.8),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -1016,7 +1023,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               Icon(
                 Icons.arrow_forward_ios,
-                color: Colors.white.withOpacity(0.7),
+                color: Colors.white.withValues(alpha: 0.7),
                 size: 16,
               ),
             ],
@@ -1077,6 +1084,71 @@ class _HomeScreenState extends State<HomeScreen> {
             MaterialPageRoute(
                 builder: (context) => const CountryExplorerScreen()))
       ),
+      (
+        'Companion',
+        Icons.smart_toy,
+        const Color(0xFF8E24AA),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PlaceGuideScreen()),
+            )
+      ),
+      (
+        'Safety',
+        Icons.health_and_safety,
+        const Color(0xFFD32F2F),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const OfflineGuidesScreen(),
+              ),
+            )
+      ),
+      (
+        'Library',
+        Icons.menu_book,
+        const Color(0xFF3949AB),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const UltimateGuideScreen()),
+            )
+      ),
+      (
+        'Analytics',
+        Icons.query_stats,
+        const Color(0xFF00897B),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AnalyticsScreen()),
+            )
+      ),
+      (
+        'Community',
+        Icons.groups,
+        const Color(0xFF7B1FA2),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const CommunityV2Screen()),
+            )
+      ),
+      (
+        'Quests',
+        Icons.military_tech,
+        const Color(0xFFF57C00),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const QuestsV2Screen()),
+            )
+      ),
+      (
+        'Premium',
+        Icons.workspace_premium,
+        const Color(0xFFFFB300),
+        () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const PremiumV2Screen()),
+            )
+      ),
     ];
 
     if (FeatureFlags.isEnabled(AppFeature.groupSync)) {
@@ -1134,9 +1206,9 @@ class _HomeScreenState extends State<HomeScreen> {
         borderRadius: BorderRadius.circular(14),
         child: Container(
           decoration: BoxDecoration(
-            color: color.withOpacity(0.12),
+            color: color.withValues(alpha: 0.12),
             border: Border.all(
-              color: color.withOpacity(0.3),
+              color: color.withValues(alpha: 0.3),
               width: 1.5,
             ),
             borderRadius: BorderRadius.circular(14),
@@ -1172,27 +1244,25 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       );
 
-      if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => WeatherForecastScreen(
-              latitude: position.latitude,
-              longitude: position.longitude,
-              locationName: 'Current Location',
-            ),
+      if (!context.mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => WeatherForecastScreen(
+            latitude: position.latitude,
+            longitude: position.longitude,
+            locationName: 'Current Location',
           ),
-        );
-      }
+        ),
+      );
     } catch (e) {
-      if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Unable to get location. Enable GPS.'),
-            duration: Duration(seconds: 3),
-          ),
-        );
-      }
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Unable to get location. Enable GPS.'),
+          duration: Duration(seconds: 3),
+        ),
+      );
     }
   }
 
