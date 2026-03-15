@@ -107,7 +107,7 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
         }
       });
 
-      return 'http://127.0.0.1:${server.port}/index.html';
+      return 'http://127.0.0.1:${server.port}/';
     } catch (_) {
       return null;
     }
