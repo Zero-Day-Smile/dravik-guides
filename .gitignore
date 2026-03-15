@@ -51,6 +51,21 @@ android/key.properties
 
 .packages
 .env
+.env.*
+!.env.example
 .vscode/
 build_output*.txt
 build_run_log.txt
+
+# Keep accidental root npm lockfile out of git; website has its own package manager files.
+/package-lock.json
+
+# Common secret and certificate artifacts
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+*.cer
+*.jks
+*.keystore
