@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -25,6 +26,7 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
   String? _inAppAssetUrl;
   bool _loading = true;
   String? _error;
+  String? _backendWarning;
 
   String _contentTypeForPath(String path) {
     final p = path.toLowerCase();
@@ -71,6 +73,11 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
 
   Future<String?> _startBundledAssetServer() async {
     try {
+      final indexBytes = await _readAssetBytes('/index.html');
+      if (indexBytes == null) {
+        return null;
+      }
+
       final server = await HttpServer.bind(InternetAddress.loopbackIPv4, 0);
       _assetServer = server;
 
@@ -111,6 +118,22 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
     } catch (_) {
       return null;
     }
+  }
+
+  void _checkBackendAvailability() {
+    final supabaseUrl = dotenv.env['SUPABASE_URL'];
+    final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+
+    final isMissing =
+        (supabaseUrl == null || supabaseUrl.isEmpty) ||
+        (supabaseAnonKey == null || supabaseAnonKey.isEmpty);
+
+    if (!mounted) return;
+    setState(() {
+      _backendWarning = isMissing
+          ? 'Backend config is missing. Some options may not work until SUPABASE_URL and SUPABASE_ANON_KEY are set.'
+          : null;
+    });
   }
 
   @override
@@ -160,6 +183,8 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
 
       _controller!.loadRequest(Uri.parse(assetUrl));
     });
+
+    _checkBackendAvailability();
   }
 
   Future<void> _openExternal() async {
@@ -179,7 +204,6 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
   Widget build(BuildContext context) {
     if (kIsWeb) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Dravik Exact Frontend')),
         body: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 640),
@@ -218,28 +242,34 @@ class _ExactFrontendWebViewScreenState extends State<ExactFrontendWebViewScreen>
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Dravik Exact Frontend'),
-        actions: [
-          IconButton(
-            tooltip: 'Reload',
-            onPressed: () => _controller?.reload(),
-            icon: const Icon(Icons.refresh),
-          ),
-          IconButton(
-            tooltip: 'Open in browser',
-            onPressed: _openExternal,
-            icon: const Icon(Icons.open_in_new),
-          ),
-        ],
-      ),
       body: Stack(
         children: [
           Positioned.fill(
-            child: _controller == null
-                ? const SizedBox.shrink()
-                : WebViewWidget(controller: _controller!),
+            child: Padding(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).padding.top + 8,
+              ),
+              child: _controller == null
+                  ? const SizedBox.shrink()
+                  : WebViewWidget(controller: _controller!),
+            ),
           ),
+          if (_backendWarning != null)
+            Positioned(
+              left: 16,
+              right: 16,
+              top: MediaQuery.of(context).padding.top + 16,
+              child: Card(
+                color: const Color(0xFFFFF3E0),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    _backendWarning!,
+                    style: const TextStyle(color: Color(0xFF8A5300)),
+                  ),
+                ),
+              ),
+            ),
           if (_loading)
             const Positioned.fill(
               child: ColoredBox(
